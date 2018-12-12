@@ -1,28 +1,25 @@
 # CLI Based Nike Scraper Using GET Requests
 import requests
-from bs4 import BeautifulSoup
+import json
 
 def NikeScraper():
-    r = requests.get("https://www.nike.com/sg/en_gb/launch")
-    soup = BeautifulSoup(r.content, 'html.parser')
-    sgList = soup.find_all(class_="exp-calendar-card-title edf-title-font-size--xlarge nsg-font-family--platform nsg-text--dark-grey")
-    sgDate = soup.find_all(class_="exp-calendar-card-badge")
+    r = requests.get('https://www.nike.com/nikestore/html/services/launchCalendar?country=SG&lang_locale=en_GB&sortOrder=asc')
+    sgList = json.loads(r.text)
 
-    r = requests.get("https://www.nike.com/au/en_gb/launch")
-    soup = BeautifulSoup(r.content, 'html.parser')
-    auList = soup.find_all(class_="exp-calendar-card-title edf-title-font-size--xlarge nsg-font-family--platform nsg-text--dark-grey")
-    auDate = soup.find_all(class_="exp-calendar-card-badge")
+    r = requests.get('https://www.nike.com/nikestore/html/services/launchCalendar?country=AU&lang_locale=en_GB&sortOrder=asc')
+    auList = json.loads(r.text)
 
+    print('Upcoming Releases for Nike')
+
+    print()
     print('Nike SG:')
-    for x, y in zip(sgList, sgDate):
-        date = y.text.splitlines()
-        print(date[1], date[2], '-', x.text.splitlines()[0])
+    for x in sgList['launchCalendarItems']:
+        print(x['month'], x['days'], '-', x['title'])
 
     print()
     print('Nike AU:')
-    for x, y in zip(auList, auDate):
-        date = y.text.splitlines()
-        print(date[1], date[2], '-', x.text.splitlines()[0])
+    for x in auList['launchCalendarItems']:
+        print(x['month'], x['days'], '-', x['title'])
 
 if __name__ == '__main__':
     NikeScraper()
