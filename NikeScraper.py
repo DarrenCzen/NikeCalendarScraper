@@ -1,25 +1,19 @@
-# CLI Based Nike Scraper Using GET Requests
+# CLI Based Nike Scraper Using GET Requests coded in Python
+# Credits to danielbrzn for URL 
+
 import requests
 import json
 
 def NikeScraper():
-    r = requests.get('https://www.nike.com/nikestore/html/services/launchCalendar?country=SG&lang_locale=en_GB&sortOrder=asc')
-    sgList = json.loads(r.text)
-
-    r = requests.get('https://www.nike.com/nikestore/html/services/launchCalendar?country=AU&lang_locale=en_GB&sortOrder=asc')
-    auList = json.loads(r.text)
-
-    print('Upcoming Releases for Nike')
-
-    print()
-    print('Nike SG:')
-    for x in sgList['launchCalendarItems']:
-        print(x['month'], x['days'], '-', x['title'])
-
-    print()
-    print('Nike AU:')
-    for x in auList['launchCalendarItems']:
-        print(x['month'], x['days'], '-', x['title'])
+    locales = ['SG', 'AU']
+    for locale in locales:
+        url = 'https://www.nike.com/nikestore/html/services/launchCalendar?country={}&lang_locale=en_GB&sortOrder=asc'.format(locale)
+        r = requests.get(url)
+        itemList = json.loads(r.text)
+        print('\nNike {}'.format(locale))
+        for item in itemList['launchCalendarItems']:
+            print(item['month'], item['days'], '-', item['title'])
 
 if __name__ == '__main__':
+    print('Nike Launch Calendar')
     NikeScraper()
