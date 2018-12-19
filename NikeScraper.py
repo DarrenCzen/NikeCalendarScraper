@@ -5,7 +5,6 @@
 # \_\ \/ |_|_|\_\___| \____/\__,_|_|\___|_| |_|\__,_|\__,_|_|   
 
 # CLI Based Nike Scraper Using GET Requests & Python
-# Credits to danielbrzn for URL
 
 import requests
 import json
